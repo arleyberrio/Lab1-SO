@@ -6,15 +6,38 @@
 #include <string.h>
 
 int main(int argc, char* argv[]) {
-  if(argc != 2) {
-    errno = 1;
-    perror("Comando invalido");
-    abort();
+  if(argc==1){
+    invalidCommand();
+  }else{  
+    for(int i=0;i<argc;i++){
+     if(strcmp(argv[1],"-l") ==0 || strcmp(argv[1],"-list")==0){
+       if(argc == 2 ){
+         invalidCommand();
+       }
+       if(i == 1){
+         //print "-- Informacion recolectada!!!"
+       }
+        if(i>1){
+          getInfoProc(argv[i]);
+        }
+      }else{
+        if((argc)==2){
+          getInfoProc(argv[1]);
+          i = argc;
+        }else{
+          invalidCommand();
+        }
+      }
+    }
   }
-    getInfoProc(argv[1]);
+  
     return 0;
 }
-
+void invalidCommand(){
+  errno = 1;
+  perror("Comando invalido");
+  abort();
+}
 void getInfoProc(char* currentPid){
     char statFileName[360];             /* /proc/PIC/stat - I think 512 bytes is far enough */
     int lineNumber[] = {0,2,17,25,26,27,56,57};
@@ -62,49 +85,5 @@ void getInfoProc(char* currentPid){
 
       currentLine++;
     }
-
-
-    //viejo  ño
-
-    // char  state, Name[32];
-    // int
-    //   Pid;
-
-    // unsigned int voluntary_ctxt_switches, nonvoluntary_ctxt_switches;
-
-    // // unsigned long
-    // // vmexe, vmdata, vmstk;
-
-    // float
-    // vmexe, vmdata, vmstk;
-    // fscanf(fd, "%d %s ",
-    //             //  "%c "
-    //             //  "%f"
-    //             //  "%f"
-    //             //  "%f"
-    //             //  "%u"
-    //             //  "%u",
-    //              &Pid,
-    //              Name
-    //             //  &state,
-    //             //  &vmexe, 
-    //             //  &vmdata,
-    //             //  &vmstk,
-    //             //  &voluntary_ctxt_switches, 
-    //             //  &nonvoluntary_ctxt_switches
-    //              );
-   
     fclose(fd);
-
-    // printf ("PID: %d\n"
-    //                 "Nombre: %s\n",
-    //                 // "Estado: %c\n"
-    //                 // "Tam. memoria TEXT: %f\n"
-    //                 // "Tam. memoria DATA: %f\n"
-    //                 // "tam. memoria STACK: %f\n"
-    //                 // "No. cambios voluntarios: %u\n"
-    //                 // "No. cambios NO voluntarios: %u\n",
-    //                 Pid, Name); 
-                    // state, vmexe, vmdata, vmstk, voluntary_ctxt_switches, nonvoluntary_ctxt_switches);
-    
 }
